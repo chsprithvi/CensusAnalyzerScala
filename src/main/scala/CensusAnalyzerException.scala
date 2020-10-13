@@ -1,9 +1,10 @@
-class CensusAnalyzerException(message:CustomException.Value) extends Exception(message.toString) {}
+class CensusAnalyzerException(message: CensusAnalyzerExceptionEnums.Value) extends Exception(message.toString) {}
 
-object CustomException extends Enumeration {
+object CensusAnalyzerExceptionEnums extends Enumeration {
   type CensusAnalyserException = Value
-  val wrongFilePath = Value("Incorrect File Path provided")
-  val wrongFileType = Value("Incorrect File Type provided")
-  val wrongDelimiter = Value("Incorrect Delimiter")
-  val wrongHeaders = Value("Incorrect Headers")
+
+  val InCorrectFilePath: CensusAnalyzerExceptionEnums.Value = Value("Incorrect File Path provided")
+  val InCorrectFileType: CensusAnalyzerExceptionEnums.Value = Value("Incorrect File Type provided")
+  val UnableToParse: CensusAnalyzerExceptionEnums.Value = Value("Unable to Parse; Invalid Delimiter or Fields")
+  val NoCensusData: CensusAnalyzerExceptionEnums.Value = Value("No Data available")
 }
