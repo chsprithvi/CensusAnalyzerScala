@@ -75,6 +75,15 @@ class CensusAnalyzer {
     sort(censusComparator.reversed())
   }
 
+  def getAreaWiseSortedCensusData(): String = {
+    val censusComparator = new Comparator[IndiaStateCensusDAO] {
+      override def compare(obj1: IndiaStateCensusDAO, obj2: IndiaStateCensusDAO): Int = {
+        obj1.areaInSqKm.compareTo(obj2.areaInSqKm)
+      }
+    }
+    sort(censusComparator.reversed())
+  }
+
   def getCountRows[T](fileIterator: util.Iterator[T]):Int = {
     var rowsCounted = 0
     while(fileIterator.hasNext) {
