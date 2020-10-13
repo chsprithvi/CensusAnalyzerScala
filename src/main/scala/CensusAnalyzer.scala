@@ -1,60 +1,69 @@
-import java.io.FileNotFoundException
-
-import scala.io.Source
+import java.util
+import java.util.Comparator
+import com.google.gson.Gson
 
 class CensusAnalyzer {
+  var censusMap: Map[String, IndiaStateCensusDAO] = Map()
+  var censusStateMap: Map[String, IndiaStateCensusDAO] = Map()
+
   def loadIndiaCensusData(filePath: String): Int = {
-    try {
-      if(!filePath.endsWith(".csv")){
-        throw new CensusAnalyzerException(CustomException.wrongFileType)
-      }
-      val fileReader = Source.fromFile(filePath)
-      var countRow = 0
-      for (line <- fileReader.getLines()) {
-        val cols = line.split(",").map(_.trim)
-
-        if (cols.length != 4){
-          throw new CensusAnalyzerException(CustomException.wrongDelimiter)
-        }
-
-        if (countRow == 0){
-          if(cols(0) != "State" || cols(1) != "Population" || cols(2) != "AreaInSqKm" || cols(3) != "DensityPerSqKm"){
-            throw new CensusAnalyzerException(CustomException.wrongHeaders)
-          }
-        }
-        countRow += 1
-      }
-      countRow - 1
-    }
-    catch {
-      case _: FileNotFoundException => throw new CensusAnalyzerException(CustomException.wrongFilePath)
-    }
+    censusMap = new CensusLoader().loadData(classOf[IndiaStateCensus], filePath)
+    censusMap.size
   }
-  def loadIndiaStateCode(filePath:String):Int={
-    try {
-      if(!filePath.endsWith(".csv")){
-        throw new CensusAnalyzerException(CustomException.wrongFileType)
-      }
-      val fileReader = Source.fromFile(filePath)
-      var countRow = 0
-      for (line <- fileReader.getLines()) {
-        val cols = line.split(",").map(_.trim)
 
-        if (cols.length != 4){
-          throw new CensusAnalyzerException(CustomException.wrongDelimiter)
-        }
+  def loadIndiaStateCode(filePath: String): Int = {
+    censusStateMap = new CensusLoader().loadData(classOf[StateCode], filePath)
+    censusStateMap.size
+  }
 
-        if (countRow == 0){
-          if(cols(0) != "SrNo" || cols(1) != "State Name" || cols(2) != "TIN" || cols(3) != "StateCode"){
-            throw new CensusAnalyzerException(CustomException.wrongHeaders)
-          }
+  def sort(censusComparator: Comparator[IndiaStateCensusDAO]): String = {
+    if (censusMap == null || censusMap.isEmpty) {
+      throw new CensusAnalyzerException(CensusAnalyzerExceptionEnums.NoCensusData)
+    }
+    val size = censusMap.size
+    val censusCSVList = censusMap.values.toArray
+    for (count <- 0 until size - 1) {
+      for (secondCount <- 0 until size - count - 1) {
+        val census1 = censusCSVList(secondCount)
+        val census2 = censusCSVList(secondCount + 1)
+        if (censusComparator.compare(census1, census2) > 0) {
+          censusCSVList(secondCount) = census2
+          censusCSVList(secondCount + 1) = census1
         }
-        countRow += 1
       }
-      countRow - 1
     }
-    catch {
-      case _: FileNotFoundException => throw new CensusAnalyzerException(CustomException.wrongFilePath)
+    val sortedStateCensusCensus = new Gson().toJson(censusCSVList)
+    sortedStateCensusCensus
+  }
+
+  def getStateCodeWiseSortedCensusData():String={
+    for (stateNameCensus <- censusMap.keys;stateName <- censusStateMap.keys;if (stateName.equals(stateNameCensus))){
+      val censusData = censusMap(stateNameCensus)
+      censusData.stateCode = censusStateMap(stateName).stateCode
     }
+    val censusComparator = new Comparator[IndiaStateCensusDAO] {
+      override def compare(censusData1: IndiaStateCensusDAO, censusData2: IndiaStateCensusDAO): Int = {
+        censusData1.stateCode.compareTo(censusData2.stateCode)
+      }
+    }
+    sort(censusComparator)
+  }
+
+  def getStateWiseSortedCensusData(): String = {
+    val censusComparator = new Comparator[IndiaStateCensusDAO] {
+      override def compare(census1: IndiaStateCensusDAO, census2: IndiaStateCensusDAO): Int = {
+        census1.state.compareTo(census2.state)
+      }
+    }
+    sort(censusComparator)
+  }
+
+  def getCountRows[T](fileIterator: util.Iterator[T]):Int = {
+    var rowsCounted = 0
+    while(fileIterator.hasNext) {
+      rowsCounted += 1
+      fileIterator.next()
+    }
+    rowsCounted
   }
 }
