@@ -112,4 +112,12 @@ class CensusAnalyzerTest extends FunSuite {
     assert(censusCSV(0).state === "Bihar")
     assert(censusCSV.last.state === "Arunachal Pradesh")
   }
+
+  test("givenIndianCensusData_WhenSortedByArea_ShouldReturnSortedResult"){
+    CensusObj.loadIndiaCensusData(IndiaCensusCSVFilePath)
+    val sortedCensusData = CensusObj.getAreaWiseSortedCensusData()
+    val censusCSV = new Gson().fromJson(sortedCensusData,classOf[Array[IndiaStateCensus]])
+    assert(censusCSV(0).state === "Rajasthan")
+    assert(censusCSV.last.state === "Goa")
+  }
 }
