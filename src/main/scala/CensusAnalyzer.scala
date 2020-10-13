@@ -58,6 +58,15 @@ class CensusAnalyzer {
     sort(censusComparator)
   }
 
+  def getPopulationWiseSortedCensusData(): String = {
+    val censusComparator = new Comparator[IndiaStateCensusDAO] {
+      override def compare(obj1: IndiaStateCensusDAO, obj2: IndiaStateCensusDAO): Int = {
+        obj1.population.compareTo(obj2.population)
+      }
+    }
+    sort(censusComparator.reversed())
+  }
+
   def getCountRows[T](fileIterator: util.Iterator[T]):Int = {
     var rowsCounted = 0
     while(fileIterator.hasNext) {
