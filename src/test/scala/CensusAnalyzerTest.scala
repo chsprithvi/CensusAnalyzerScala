@@ -96,11 +96,20 @@ class CensusAnalyzerTest extends FunSuite {
     assert(throws.getMessage === CensusAnalyzerExceptionEnums.NoCensusData.toString)
   }
 
-  test("givenIndianCensusDataAndStateDate_WhenSortedByPopulation_ShouldReturnSortedResult"){
+  test("givenIndianCensusData_WhenSortedByPopulation_ShouldReturnSortedResult"){
     CensusObj.loadIndiaCensusData(IndiaCensusCSVFilePath)
     val sortedCensusData = CensusObj.getPopulationWiseSortedCensusData()
     val censusCSV = new Gson().fromJson(sortedCensusData,classOf[Array[IndiaStateCensus]])
     assert(censusCSV(0).state === "Uttar Pradesh")
     assert(censusCSV.last.state === "Sikkim")
+  }
+
+
+  test("givenIndianCensusData_WhenSortedByDensity_ShouldReturnSortedResult"){
+    CensusObj.loadIndiaCensusData(IndiaCensusCSVFilePath)
+    val sortedCensusData = CensusObj.getPopulationDensityWiseSortedCensusData()
+    val censusCSV = new Gson().fromJson(sortedCensusData,classOf[Array[IndiaStateCensus]])
+    assert(censusCSV(0).state === "Bihar")
+    assert(censusCSV.last.state === "Arunachal Pradesh")
   }
 }
