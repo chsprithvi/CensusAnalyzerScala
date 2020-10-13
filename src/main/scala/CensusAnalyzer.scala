@@ -57,6 +57,14 @@ class CensusAnalyzer {
     }
     sort(censusComparator)
   }
+  def getDensityWiseSortedCensusData():String = {
+    val censusComparator = new Comparator[IndiaStateCensusDAO] {
+      override def compare(obj1: IndiaStateCensusDAO, obj2: IndiaStateCensusDAO): Int = {
+        obj1.densityPerSqKm.compareTo(obj2.densityPerSqKm)
+      }
+    }
+    sort(censusComparator.reversed())
+  }
 
   def getPopulationWiseSortedCensusData(): String = {
     val censusComparator = new Comparator[IndiaStateCensusDAO] {
