@@ -1,3 +1,4 @@
-[debug] not up to date. inChanged = true, force = false
-[debug] Updating ProjectRef(uri("file:/home/cspr/IdeaProjects/CensusAnalyzerScala/"), "censusanalyzerscala")...
-[debug] Done updating ProjectRef(uri("file:/home/cspr/IdeaProjects/CensusAnalyzerScala/"), "censusanalyzerscala")
+[warn] scala-library-2.13.3-sources.jar no longer exists at \home\cspr\.var\app\com.jetbrains.IntelliJ-IDEA-Community\cache\coursier\v1\https\repo1.maven.org\maven2\org\scala-lang\scala-library\2.13.3\scala-library-2.13.3-sources.jar
+[debug] not up to date. inChanged = false, force = false
+[debug] Updating ProjectRef(uri("file:/C:/Users/chspr/IdeaProjects/CensusAnalyzerScala/"), "censusanalyzerscala")...
+[debug] Done updating ProjectRef(uri("file:/C:/Users/chspr/IdeaProjects/CensusAnalyzerScala/"), "censusanalyzerscala")
