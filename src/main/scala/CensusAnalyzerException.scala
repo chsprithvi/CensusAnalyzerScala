@@ -5,6 +5,6 @@ object CensusAnalyzerExceptionEnums extends Enumeration {
 
   val InCorrectFilePath: CensusAnalyzerExceptionEnums.Value = Value("Incorrect File Path provided")
   val InCorrectFileType: CensusAnalyzerExceptionEnums.Value = Value("Incorrect File Type provided")
-  val UnableToParse: CensusAnalyzerExceptionEnums.Value = Value("Unable to Parse; Invalid Delimiter or Fields")
-  val NoCensusData: CensusAnalyzerExceptionEnums.Value = Value("No Data available")
+  val UnableToParse: CensusAnalyzerExceptionEnums.Value = Value("Not able to Parse Invalid Delimiter or Fields")
+  val NoCensusData: CensusAnalyzerExceptionEnums.Value = Value("Not Data available")
 }
