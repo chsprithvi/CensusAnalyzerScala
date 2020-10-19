@@ -1,21 +1,11 @@
+import Country.Country
 import com.google.gson.Gson
 
 class CensusAnalyzer {
   var censusMap: Map[String, CensusDAO] = Map()
-  var censusStateMap: Map[String, CensusDAO] = Map()
 
-  def loadIndiaCensusData(filePath: String): Int = {
-    censusMap = new CensusLoader().loadData(classOf[IndiaStateCensus], filePath)
-    censusMap.size
-  }
-
-  def loadIndiaStateCode(filePath: String): Int = {
-    censusStateMap = new CensusLoader().loadData(classOf[StateCode], filePath)
-    censusStateMap.size
-  }
-
-  def loadCensusUSData(filePath: String):Int={
-    censusMap = new CensusLoader().loadData(classOf[USCensusDTO],filePath)
+  def loadCensusData(country: Country,filepath:String*): Int = {
+    censusMap = new CensusLoader().loadData(country,filepath)
     censusMap.size
   }
 
@@ -40,10 +30,6 @@ class CensusAnalyzer {
   }
 
   def getStateCodeWiseSortedCensusData: String = {
-    for (stateNameCensus <- censusMap.keys; stateName <- censusStateMap.keys; if (stateName.equals(stateNameCensus))) {
-      val censusData = censusMap(stateNameCensus)
-      censusData.stateCode = censusStateMap(stateName).stateCode
-    }
     sort(2)
   }
 

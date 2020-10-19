@@ -1,3 +1,6 @@
+/***
+ * Data Access Object class
+ */
 class CensusDAO {
   var state:String = _
   var population:Double = 0
@@ -9,20 +12,30 @@ class CensusDAO {
   var landArea:Double = 0
   var housingDensity:Double = 0
 
-  def this(indiaCensus: IndiaStateCensus){
+  /***
+   * defines and loads variables wrt IndiaCensusDTO class
+   * @param indiaCensusCSV reference type for IndiaCensusDTO
+   */
+  def this(indiaCensusCSV: IndiaCensusDTO){
     this()
-    state = indiaCensus.state
-    totalArea = indiaCensus.areaInSqKm
-    populationDensity = indiaCensus.densityPerSqKm
-    population = indiaCensus.population
+    state=indiaCensusCSV.state
+    totalArea=indiaCensusCSV.areaInSqKm
+    populationDensity=indiaCensusCSV.densityPerSqKm
+    population=indiaCensusCSV.population
   }
-
-  def this(stateCensusCode: StateCode){
+  /***
+   * defines and loads variables wrt IndiaStateCodeCensusDTO class
+   * @param indiaStateCodeCSV reference type for IndiaStateCodeDTO
+   */
+  def this(indiaStateCodeCSV: IndiaStateCodeDTO){
     this()
-    state = stateCensusCode.sateName
-    stateCode = stateCensusCode.stateCode
+    state=indiaStateCodeCSV.stateName
+    stateCode= indiaStateCodeCSV.stateCode
   }
-
+  /***
+   * defines and loads variables wrt USCensusDTO class
+   * @param usCensusCSV reference type for USCensusDTO
+   */
   def this(usCensusCSV:USCensusDTO){
     this()
     stateCode = usCensusCSV.stateId
